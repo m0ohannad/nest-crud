@@ -3,6 +3,7 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { DataSource } from 'typeorm';
 import { Article } from './entities/article.entity';
+import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class ArticleService {
@@ -31,4 +32,12 @@ export class ArticleService {
     return `This action removes a #${id} article`;
   }
 
+async seedArticles() {
+  const articles = Array.from({ length: 10 }, () => ({
+    title: faker.lorem.sentence(),
+    body: faker.lorem.paragraphs(3),
+  }));
+  await this.articleRepository.save(articles);
+  return { message: "Database seeded successfully" };
+}
 }

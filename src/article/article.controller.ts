@@ -32,4 +32,8 @@ export class ArticleController {
     return this.articleService.remove(+id);
   }
 
+  @Post('/seed')
+  async seedDatabase() {
+    return this.articleService.seedArticles();
+  }
 }
