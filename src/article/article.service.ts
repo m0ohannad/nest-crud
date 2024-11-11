@@ -26,7 +26,9 @@ export class ArticleService {
   }
 
   update(id: number, updateArticleDto: UpdateArticleDto) {
-    return this.articleRepository.update(id, updateArticleDto);
+    return this.articleRepository.update(id, updateArticleDto).then(() => {
+      return { message: `Article #${id} updated successfully` };
+    });
   }
 
   remove(id: number) {
