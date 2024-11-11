@@ -18,11 +18,11 @@ export class ArticleService {
   }
 
   findAll() {
-    return `This action returns all article`;
+    return this.articleRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} article`;
+    return this.articleRepository.findOneBy({id: id});
   }
 
   update(id: number, updateArticleDto: UpdateArticleDto) {
