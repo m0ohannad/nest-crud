@@ -13,7 +13,8 @@ export class ArticleService {
   articleRepository = this.dataSource.getRepository(Article);
 
   create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article';
+    const article = this.articleRepository.create(createArticleDto);
+    return this.articleRepository.save(article);
   }
 
   findAll() {
