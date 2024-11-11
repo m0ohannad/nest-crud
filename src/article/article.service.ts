@@ -22,25 +22,25 @@ export class ArticleService {
   }
 
   findOne(id: number) {
-    return this.articleRepository.findOneBy({id: id});
+    return this.articleRepository.findOneBy({ id: id });
   }
 
-  update(id: number, updateArticleDto: UpdateArticleDto) {
-    return this.articleRepository.update(id, updateArticleDto).then(() => {
-      return { message: `Article #${id} updated successfully` };
-    });
+  async update(id: number, updateArticleDto: UpdateArticleDto) {
+    await this.articleRepository.update(id, updateArticleDto);
+    return { message: `Article #${id} updated successfully` };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} article`;
+  async remove(id: number) {
+    await this.articleRepository.delete(id);
+    return { message: `Article #${id} deleted successfully` };
   }
 
-async seedArticles() {
-  const articles = Array.from({ length: 10 }, () => ({
-    title: faker.lorem.sentence(),
-    body: faker.lorem.paragraphs(3),
-  }));
-  await this.articleRepository.save(articles);
-  return { message: "Database seeded successfully" };
-}
+  async seedArticles() {
+    const articles = Array.from({ length: 10 }, () => ({
+      title: faker.lorem.sentence(),
+      body: faker.lorem.paragraphs(3),
+    }));
+    await this.articleRepository.save(articles);
+    return { message: "Database seeded successfully" };
+  }
 }
