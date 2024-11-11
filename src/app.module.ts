@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ArticleModule } from './article/article.module';
 
 const entitiesPath = __dirname + '/**/*.entity{.ts,.js}';
 
@@ -18,7 +19,8 @@ const entitiesPath = __dirname + '/**/*.entity{.ts,.js}';
       entities: [entitiesPath],
       synchronize: false,
       logging: false,
-    })
+    }),
+    ArticleModule
   ],
   controllers: [AppController],
   providers: [AppService],
