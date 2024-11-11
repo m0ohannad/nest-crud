@@ -26,7 +26,7 @@ export class ArticleService {
   }
 
   update(id: number, updateArticleDto: UpdateArticleDto) {
-    return `This action updates a #${id} article`;
+    return this.articleRepository.update(id, updateArticleDto);
   }
 
   remove(id: number) {

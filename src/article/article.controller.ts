@@ -24,7 +24,8 @@ export class ArticleController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articleService.update(+id, updateArticleDto);
+    this.articleService.update(+id, updateArticleDto);
+    return { message: `Article with id ${id} updated successfully` };
   }
 
   @Delete(':id')
