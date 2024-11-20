@@ -36,7 +36,11 @@ export class AuthService {
       throw new BadRequestException('email already exists');
     }
     const hashedPassword = await bcrypt.hash(user.password, 10);
-    const newUser: User = { ...user, password: hashedPassword };
+    const newUser = new User();
+    newUser.email = user.email;
+    newUser.password = hashedPassword;
+    newUser.firstName = user.firstName;
+    newUser.lastName = user.lastName;
     await this.usersService.create(newUser);
     return this.login(newUser);
   }

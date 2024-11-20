@@ -1,16 +1,14 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArticleModule } from './article/article.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { ArticleModule } from './article/article.module';
 import { JwtGuard } from './auth/guards/jwt.guard';
 import { JwtStrategy } from './auth/strategy/jwt.strategy';
-
-const entitiesPath = __dirname + '/**/*.entity{.ts,.js}';
+import { SeedersModule } from './seeders/seeders.module';
 
 @Module({
   imports: [
@@ -23,19 +21,18 @@ const entitiesPath = __dirname + '/**/*.entity{.ts,.js}';
       password: '',
       database: 'masar-blog-db',
       autoLoadEntities: true,
-      entities: [entitiesPath],
-      synchronize: false,
-      logging: false,
+      synchronize: true,
     }),
+    UsersModule,
+    AuthModule,
     ArticleModule,
-    UsersModule, // Ensure UsersModule is imported here
-    AuthModule,  // Ensure AuthModule is imported here
+    SeedersModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
     {
-      provide: APP_GUARD,
+      provide: 'APP_GUARD',
       useClass: JwtGuard,
     },
     JwtStrategy,

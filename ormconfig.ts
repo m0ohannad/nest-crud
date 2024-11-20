@@ -9,16 +9,17 @@ export const dataSourceOptions: DataSourceOptions = {
   username: 'postgres',
   password: '',
   database: 'masar-blog-db',
-  // entities: [Episode],
-  //   autoLoadEntities: true,
-  synchronize: true, // todo: not safe for production and we should use migrations instead
-  // subscribers: [__dirname + '/domain/subscribers/*.subscriber{.ts,.js}'],
+  synchronize: true,
   migrations: ['./src/migration/*{.ts,.js}'],
   entities: ['src/**/*.entity{.ts,.js}'],
 };
 
 const dataSource = new DataSource(dataSourceOptions);
-dataSource.initialize();
+
+export const initializeDataSource = async () => {
+  if (!dataSource.isInitialized) {
+    await dataSource.initialize();
+  }
+};
 
 export default dataSource;
-
