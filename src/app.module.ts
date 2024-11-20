@@ -28,8 +28,8 @@ const entitiesPath = __dirname + '/**/*.entity{.ts,.js}';
       logging: false,
     }),
     ArticleModule,
-    UsersModule,
-    AuthModule
+    UsersModule, // Ensure UsersModule is imported here
+    AuthModule,  // Ensure AuthModule is imported here
   ],
   controllers: [AppController],
   providers: [
@@ -41,4 +41,4 @@ const entitiesPath = __dirname + '/**/*.entity{.ts,.js}';
     JwtStrategy,
   ],
 })
-export class AppModule { }
+export class AppModule {}

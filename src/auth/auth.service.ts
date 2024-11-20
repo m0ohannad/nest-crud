@@ -12,6 +12,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
+
   async validateUser(email: string, password: string): Promise<User> {
     const user: User = await this.usersService.findOneByEmail(email);
     if (!user) {
@@ -23,10 +24,12 @@ export class AuthService {
     }
     return user;
   }
+
   async login(user: User): Promise<AccessToken> {
     const payload = { email: user.email, id: user.id };
     return { access_token: this.jwtService.sign(payload) };
   }
+
   async register(user: RegisterRequestDto): Promise<AccessToken> {
     const existingUser = await this.usersService.findOneByEmail(user.email);
     if (existingUser) {

@@ -1,46 +1,40 @@
 import { Injectable } from '@nestjs/common';
-import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
-import { DataSource } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, ILike } from 'typeorm';
 import { Article } from './entities/article.entity';
-import { faker } from '@faker-js/faker';
+import { PageService } from '../common/services/page.service';
+import { GenericFilter } from '../common/dto/generic-filter.dto';
 
 @Injectable()
-export class ArticleService {
-
-  constructor(private readonly dataSource: DataSource) { }
-
-  articleRepository = this.dataSource.getRepository(Article);
-
-  create(createArticleDto: CreateArticleDto) {
-    const article = this.articleRepository.create(createArticleDto);
-    return this.articleRepository.save(article);
+export class ArticleService extends PageService {
+  constructor(
+    @InjectRepository(Article)
+    private repository: Repository<Article>,
+  ) {
+    super();
   }
 
-  findAll() {
-    return this.articleRepository.find();
+  async findAllPaginated(filter: GenericFilter & Partial<Article>) {
+    const { ...params } = filter;
+
+    return await this.paginate(
+      this.repository,
+      filter,
+      this.createWhereQuery(params),
+    );
   }
 
-  findOne(id: number) {
-    return this.articleRepository.findOneBy({ id: id });
-  }
+  private createWhereQuery(params: Partial<Article>) {
+    const where: any = {};
 
-  async update(id: number, updateArticleDto: UpdateArticleDto) {
-    await this.articleRepository.update(id, updateArticleDto);
-    return { message: `Article #${id} updated successfully` };
-  }
+    if (params.title) {
+      where.title = ILike(`%${params.title}%`);
+    }
 
-  async remove(id: number) {
-    await this.articleRepository.delete(id);
-    return { message: `Article #${id} deleted successfully` };
-  }
+    if (params.body) {
+      where.body = ILike(`%${params.body}%`);
+    }
 
-  async seedArticles() {
-    const articles = Array.from({ length: 10 }, () => ({
-      title: faker.lorem.sentence(),
-      body: faker.lorem.paragraphs(3),
-    }));
-    await this.articleRepository.save(articles);
-    return { message: "Database seeded successfully" };
+    return where;
   }
 }
