@@ -116,6 +116,34 @@ This project is a backend application for a Blog built with NestJS. It allows us
 - **GET /**: Get a welcome message
   - Response: `"Hello World!"`
 
+
+## Fill data & Database indexing
+
+### Seeders
+
+I have created a large number of users and tested the query method to measure the time required to retrieve them.
+
+> **Note:** Initially, I attempted to create `const chunkSize = 10_000;` and `const totalUsers = 1_000_000;`, but it took a very long time due to my computer's specifications. Therefore, I reduced the values to `const chunkSize = 10;` and `const totalUsers = 1_000;`.
+
+![Sending Request](assets/sending-request.png)
+
+After reducing the numbers, the users were successfully created using the Seeders `fillUser` endpoint, and the process took 1m 52.86s.
+
+![Response Time](assets/response-time.png)
+
+### Database Indexing
+
+I attempted to query users using the BTREE algorithm, and it took 7ms to retrieve all users.
+
+![Users Response](assets/users-response.png)
+
+After that, I tried to change the indexing, but I encountered the following error in TablePlus:
+
+![TablePlus Error](assets/TablePlus-errore.png)
+
+So, I decided to use the default indexing method.
+
+
 ## Project setup
 
 ```bash
